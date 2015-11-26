@@ -1,0 +1,167 @@
+<HTML>
+<HEAD>
+	<TITLE> Статистика </TITLE>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+	<meta http-equiv="imagetoolbar" content="no">
+	<link rel="stylesheet" type="text/css" href="/src/style.css"> 
+</HEAD>
+<BODY>
+<SCRIPT type="text/javascript">
+function get_stat_by_login(login)
+{
+	document.detail_form.login.value = login;
+	document.detail_form.submit();
+}
+</SCRIPT>
+<TABLE width="100%" class="table">
+<tr class="top_link"> <td colspan="2"> 
+		<form name="detail_form" action="/cgi/statis.cgi" method="get">
+			<input type=hidden name="login" value="<TMPL_VAR NAME=req_ident>">
+			<input type=hidden name=arc_year value="<TMPL_VAR NAME=cur_year>">
+			<input type=hidden name=arc_month value="<TMPL_VAR NAME=cur_month>">
+			<input type=hidden name=arc_day value="<TMPL_VAR NAME=cur_day>">
+		</form>
+		<TMPL_IF NAME=display_archive_form>
+			<form name="archive_form" action="/cgi/statis.cgi" method="get">
+			<TMPL_IF NAME=cur_year>
+				<input type=hidden name=arc_year value="<TMPL_VAR NAME=cur_year>">
+				<a href="/cgi/statis.cgi"><TMPL_VAR NAME=cur_year></a>
+					&gt;
+				<TMPL_IF NAME=cur_month>
+						<input type=hidden name=arc_month value="<TMPL_VAR NAME=cur_month>">
+						<a href="/cgi/statis.cgi?arc_year=<TMPL_VAR NAME=cur_year>"><TMPL_VAR NAME=cur_month_name></a>
+						&gt; 
+					<TMPL_IF NAME=cur_day>
+						<input type=hidden name=arc_day value="<TMPL_VAR NAME=cur_day>">
+						<a href="/cgi/statis.cgi?arc_year=<TMPL_VAR NAME=cur_year>&arc_month=<TMPL_VAR NAME=cur_month>"><TMPL_VAR NAME=cur_day></a>
+					<TMPL_ELSE>
+						<select name="arc_day">
+						<TMPL_IF NAME=last_day>
+							<option value="<TMPL_VAR NAME=last_day>">День</option>
+						</TMPL_IF>
+							<TMPL_LOOP NAME=day_select_list>
+								<option value="<TMPL_VAR NAME=arc_day>" <TMPL_VAR NAME=selected> ><TMPL_VAR NAME=arc_day></option>
+							</TMPL_LOOP>
+						</select>
+					</TMPL_IF>
+
+				<TMPL_ELSE>
+					<select name="arc_month">
+					<TMPL_IF NAME=last_month>
+						<option value="<TMPL_VAR NAME=last_month>">Месяц</option>
+					</TMPL_IF>
+					<TMPL_LOOP NAME=month_select_list>
+						<option value="<TMPL_VAR NAME=arc_month>" <TMPL_VAR NAME=selected> ><TMPL_VAR NAME=month_name></option>
+					</TMPL_LOOP>
+					</select>
+				</TMPL_IF>
+
+			<TMPL_ELSE>
+				<select name="arc_year">
+					<TMPL_IF NAME=last_year>
+						<option value="<TMPL_VAR NAME=last_year>">Год</option>
+					</TMPL_IF>
+					<TMPL_LOOP NAME=year_select_list>
+						<option value="<TMPL_VAR NAME=arc_year>" <TMPL_VAR NAME=selected> ><TMPL_VAR NAME=arc_year></option>
+					</TMPL_LOOP>
+				</select>
+			</TMPL_IF>
+
+				<input type=submit value="Архив">
+			</form>
+			</td>
+		<td>
+		</TMPL_IF>
+	
+		<TMPL_IF NAME=working_with_archive>
+			<a href="/cgi/statis.cgi">Статистика за <TMPL_VAR NAME=today></a>
+		<TMPL_ELSE>
+			<a href="/cgi/statis.cgi">Обновить статистику за <TMPL_VAR NAME=today></a>
+		</TMPL_IF>
+			<a href="/cgi/auth.cgi?draw_menu_only=yes">Управление</a> 
+			<a href="/cgi/auth.cgi?logout=yes">Выход</a>
+	</td></tr>
+  <tr>
+	  <td colspan="3" align="center" class="info">
+		  <table width="100%">
+
+		 <TMPL_IF NAME=req_ident>
+				  <tr><td align="center" colspan="2">
+						  <strong><TMPL_VAR NAME=req_ident>
+							  (<TMPL_VAR NAME=descr>) </strong>
+							<TMPL_UNLESS NAME=working_with_archive>
+								<!--<a href="/cgi/statis.cgi?login=<TMPL_VAR NAME=req_ident>">Обновить данные</a>-->
+							</TMPL_UNLESS>
+						  </td><tr>
+			  <tr class="head">
+				  <td> Сайт </td>
+				  <td> Трафик </td>
+			  </tr>
+			  <TMPL_LOOP NAME=site_stat>
+				<TMPL_IF NAME=null_data>
+				<tr>
+					<td colspan=2>
+						Нет данных.
+					</td>
+				</tr>
+				<TMPL_ELSE>
+					<TMPL_IF NAME=total_line>
+						<tr class=head>
+							<td>
+							 <strong>ВСЕГО</strong> 
+							</td>
+							<td>
+								<TMPL_VAR NAME=bytes>
+							</td>
+						</tr>
+					<TMPL_ELSE>
+
+					  <tr>
+					    <td> <TMPL_VAR NAME=site> </td>
+						<td> <TMPL_VAR NAME=bytes> </td>
+			  		  </tr>
+					</TMPL_IF>
+				</TMPL_IF>
+			  </TMPL_LOOP>
+
+		 <TMPL_ELSE>
+
+			  <tr class="head">
+				  <td> ID (описание) </td>
+				  <td> Трафик</td>
+			  </tr>
+			  <TMPL_LOOP NAME=user_stat>
+				<TMPL_IF NAME=null_data>
+				<tr>
+					<td colspan=2>
+						Нет данных.
+					</td>
+				</tr>
+				<TMPL_ELSE>
+					<TMPL_IF NAME=total_line>
+						<tr class=head>
+							<td>
+							 <strong>ВСЕГО</strong> 
+							</td>
+							<td>
+								<TMPL_VAR NAME=bytes>
+							</td>
+						</tr>
+					<TMPL_ELSE>
+			 		 <tr>
+						  <td>	<a href="javascript:get_stat_by_login('<TMPL_VAR NAME=login>')"><TMPL_VAR NAME=login> (<TMPL_VAR NAME=descr>)</a> </td>
+							<td> <TMPL_VAR NAME=bytes> </td>
+					  </tr>
+					</TMPL_IF>
+				</TMPL_IF>
+			  </TMPL_LOOP>
+
+		 </TMPL_IF>
+
+		 </table>
+	  </td>
+  </tr>
+</TABLE>
+</BODY>
+</HTML>
+

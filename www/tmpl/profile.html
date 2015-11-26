@@ -1,0 +1,106 @@
+<HTML>
+<HEAD>
+	<TITLE> Профиль пользователя <TMPL_VAR NAME=login> (<TMPL_VAR NAME=fullname>) </TITLE>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+	<meta http-equiv="imagetoolbar" content="no">
+	<link rel="stylesheet" type="text/css" href="/src/style.css"> 
+</HEAD>
+<BODY>
+
+<SCRIPT type="text/javascript">
+function check_passwords()
+{
+	document.chpass.action.value = "chpass";
+	if (document.chpass.new_pass.value == document.chpass.confirm_pass.value)
+	{
+		if (document.chpass.new_pass.value == "")
+		{
+			if (confirm("Действительно хотите установить пустой пароль?"))
+			{
+				document.chpass.new_value.value = "";
+				document.chpass.submit();
+			}
+		}
+		else
+		{
+			document.chpass.new_value.value = document.chpass.new_pass.value;
+			document.chpass.submit();
+		}
+	}
+	else
+	{
+		alert("Введенные пароли не совпадают!");
+	}
+}
+</SCRIPT>
+
+<TABLE width="100%" class="table">
+<tr class="top_link"> 
+	  <td align="center"> 
+<a href="/cgi/statis.cgi">Статистика</a>
+ <a href="/cgi/auth.cgi?logout=yes">Выход</a>
+	  </td>
+  	</tr>
+</table>
+<table class="add" width="100%">
+  <tr>
+	  <td align="center">
+			<table class="form">
+		    <form name="chpass" method="post" action="/cgi/admin.cgi">
+			  <input type="hidden" name="action" value="chpass">
+			  <input type="hidden" name="login" value="<TMPL_VAR NAME=login>">
+			  <input type="hidden" name="new_value" value="">
+			  <tr class="head"><td colspan="2" align="center">
+			  Смена пароля:
+		  </td></tr>
+			  <tr>
+				  <td> Действующий пароль: </td>
+				  <td> <input type="password" name="current_value"></td>
+			  </tr>
+			  <tr>
+				  <td> Новый пароль:</td>
+				  <td> <input type="password" name="new_pass"></td>
+			  </tr>
+ 			  <tr>
+				  <td> Новый пароль (повторно):</td>
+				  <td> <input type="password" name="confirm_pass"></td>
+			  </tr>
+			  <tr> <td colspan="2" align="center"> <input type="button" onClick="javascript:check_passwords();" value="Сменить пароль"></td> </tr>
+		 </form>
+		 </table>
+	  </td>
+	  <td align="center"> 
+
+		  <table class="form">
+		  <tr>
+		  <td>
+		<TMPL_VAR NAME=fullname>
+		</td></tr><tr><td>
+		Ваш лимит: <TMPL_VAR NAME=bytelimit> Мбайт
+		</td></tr><tr><td>
+		Текущий траффик: <TMPL_VAR NAME=bytecounter> Мбайт
+		</td></tr><tr><td>
+		Вам 
+		<TMPL_IF NAME=ignorelimit>
+			<font color="green">разрешено</font>
+		<TMPL_ELSE>
+			<font color="red">запрещено</font>
+		</TMPL_IF>
+		превышать лимит.
+		</td></tr><tr><td>
+		Доступ
+		<TMPL_IF NAME=cache_access>
+			<font color="green">разрешен</font>.
+		<TMPL_ELSE>
+			<font color="red">заблокирован</font>.
+		</TMPL_IF>
+		</td>
+		</tr>
+		</table>
+		
+	  </td>
+  </tr>
+</TABLE>
+</BODY>
+</HTML>
+

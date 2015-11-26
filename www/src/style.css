@@ -1,0 +1,45 @@
+body, table, td, th, form, img {padding: 0; margin: 0; border: 0;} 
+ 
+body {background: #fff; padding: 35px; behavior: url(/src/csshover.htc); } 
+body, td {font-family: verdana, sans-serif; font-size: 14px; color: #000; line-height: 135%;} 
+ 
+table {border-collapse: collapse;} 
+td {vertical-align: top;} 
+ 
+a {color: #00c; text-decoration: underline;} 
+a:hover {text-decoration: none; color: #c00;} 
+ 
+small {font-size: 11px;} 
+ 
+h1, h2, h3 {font-family: arial; font-weight: normal; line-height: 115%; padding: 0; margin: 0 0 0.5em 0;} 
+h1 {font-size: 24px;} 
+h2 {font-size: 18px;} 
+h3 {font-size: 16px;} 
+ 
+h4, h5 {font-weight: normal; display: inline; padding: 0; margin: 0;} 
+h4 {font-size: 14px;} 
+/*h5 {font-size: 10px;}*/ 
+ 
+.height {height: 100%;} 
+.nowrap {white-space: nowrap;} 
+.bottom {vertical-align: bottom;} 
+.middle {vertical-align: middle;} 
+.clear {clear: both;} 
+ 
+p {padding: 0; margin: 0 0 1.5em 0; line-height: 135%;}
+
+/* main styles */
+.table { }
+.table .top_link {}
+.table .top_link td { padding: 0 0 25px 0; border-bottom: 1px solid #000; }
+.table .top_link td a { margin: 0 25px; }
+.table td.info td { padding: 5px; border-bottom: 1px solid #000; vertical-align: middle; }
+.table td.info tr:hover td { background: #ebebeb; }
+.table td.info tr.head td { background: #ebebeb;  }
+
+.add { margin: 55px 0 0 0; }
+.add td { padding: 0 55px 0 0; }
+.add td .form { }
+.add td .form td { padding: 0 5px 5px 0; }
+.add .head td { padding: 0 0 5px 0; font-weight: bold; }
+

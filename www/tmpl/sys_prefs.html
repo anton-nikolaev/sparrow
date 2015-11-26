@@ -1,0 +1,77 @@
+<HTML>
+<HEAD>
+<TITLE> Настройки системы </TITLE>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+	<meta http-equiv="imagetoolbar" content="no">
+	<link rel="stylesheet" type="text/css" href="/src/style.css"> 
+</HEAD>
+<BODY>
+
+<TABLE width="100%" class="table">
+<tr class="top_link"> 
+	  <td align="center"> 
+		  <a href="/cgi/auth.cgi?draw_menu_only=yes">Управление</a>
+		<a href="/cgi/statis.cgi">Статистика</a> 
+ 		<a href="/cgi/auth.cgi?logout=yes">Выход</a>
+	  </td>
+  	</tr>
+</table>
+<table class="add" width="100%">
+  <tr>
+	  <td align="center">
+	  </td>
+	  <td align="center"> 
+
+		  <table class="form">
+		  <tr>
+		<td>
+		Запросы, ответы на которые были взяты из кэша, 
+		<TMPL_IF NAME=count_cached_requests>
+		учитываются. <a href="/cgi/sys_prefs.cgi?action=ch_ccreq&new_value=0">Не учитывать</a>
+		<TMPL_ELSE>
+		не учитываются. <a href="/cgi/sys_prefs.cgi?action=ch_ccreq&new_value=1">Учитывать</a>
+		</TMPL_IF>
+		</td></tr><tr><td>
+		Пустые пароли
+		<TMPL_IF NAME=null_passwords_allowed>
+		<font color=red>разрешены.</font> <a href="/cgi/sys_prefs.cgi?action=ch_null_pwd&new_value=0">Запретить</a>
+		<TMPL_ELSE>
+		запрещены. <a href="/cgi/sys_prefs.cgi?action=ch_debug&new_value=1">Разрешить</a>
+		</TMPL_IF>
+		</td></tr><tr><td>
+		<hr>
+		</td></tr><tr><td>
+		Текущее время: <TMPL_VAR NAME=current_time>
+		</td></tr><tr><td>
+		Время последнего запуска агента прокси-сервера:<font color="<TMPL_VAR NAME=squid_agent_status>">
+		<TMPL_VAR NAME=squid_agent_lastrun></font>
+		</td></tr><tr><td>
+		Время последней обработанной записи из журнала статистики прокси-сервера:
+		<TMPL_VAR NAME=statis_timepoint>
+		</td></tr><tr><td>
+		<hr>
+		</td></tr><tr><td>
+		<form method=get action="/cgi/sys_prefs.cgi">
+		Сбрасывать счетчики трафика один раз в 
+		<input type=hidden name=action value=ch_period_rst>
+		<select name=period_reset>
+			<option value="weekly" <TMPL_VAR NAME=weekly_selected> >неделю</option>
+			<option value="2week" <TMPL_VAR NAME=two_week_selected> >две недели</option>
+			<option value="monthly" <TMPL_VAR NAME=monthly_selected> >месяц</option>
+			<option value="daily" <TMPL_VAR NAME=daily_selected> >день</option>
+		</select>
+		<input type=submit value="Применить">
+		</form>
+		</td></tr><tr><td>
+		Время последнего сброса счетчиков трафика:
+		<TMPL_VAR NAME=period_start_time>
+		</td>
+		</tr>
+		</table>
+		
+	  </td>
+  </tr>
+</TABLE>
+</BODY>
+</HTML>
+

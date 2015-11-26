@@ -1,0 +1,317 @@
+<HTML>
+<HEAD>
+	<title>Управление</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+	<meta http-equiv="imagetoolbar" content="no">
+	<link rel="stylesheet" type="text/css" href="/src/style.css"> 
+</HEAD>
+<BODY>
+<SCRIPT type="text/javascript">
+function chpass(login)
+{
+	var newpass = prompt("Введите новый пароль для " + login);
+	document.mainusers.login.value = login;
+	document.mainusers.action.value = "chpass";
+	if (newpass == "")
+	{
+		if (confirm("Действительно хотите установить пустой пароль для " + login + "?"))
+		{
+			document.mainusers.new_value.value = "";
+			document.mainusers.submit();
+		}
+	}
+	else
+	{
+		if (newpass == undefined)
+		{
+			alert("Пароль для " + login + " не изменился.");
+		}
+		else
+		{
+			document.mainusers.new_value.value = newpass;
+			document.mainusers.submit();
+		}
+	}
+}
+
+function rmuser(login)
+{
+	if (confirm("Действительно хотите удалить " + login + " ?"))
+	{
+		document.mainusers.login.value = login;
+		document.mainusers.action.value = "rmuser";
+		document.mainusers.submit();
+	}	
+}
+
+function chlimit(login)
+{
+	var newlimit = prompt("Введите новое значение лимита (Мб) для " + login);
+	if (newlimit == "")
+		alert("Введите целое число.");
+	else
+	{
+		if (newlimit == undefined)
+		{
+			alert("Лимит для " + login + " не изменился.");
+		}
+		else
+		{
+			document.mainusers.login.value = login;
+			document.mainusers.action.value = "chlimit";	
+			document.mainusers.new_value.value = newlimit;	
+			document.mainusers.submit();
+		}
+	}
+}
+
+function chdescr(login)
+{
+	var newdescr = prompt("Введите новое Описание для " + login);
+	if (newdescr == "")
+		alert("Введите описание или ФИО.");
+	else
+	{
+		if (newdescr == undefined)
+		{
+			alert("Описание для " + login + " не изменилось.");
+		}
+		else
+		{
+			document.mainusers.login.value = login;
+			document.mainusers.action.value = "chdescr";
+			document.mainusers.new_value.value = newdescr; 
+			document.mainusers.submit();
+		}
+	}
+}
+
+function chadmin(login, flag)
+{
+	document.mainusers.login.value = login;
+	document.mainusers.action.value = "chadmin";
+	if (flag == "0")
+	{
+		if (confirm("Действительно хотите отобрать привилегии администратора у " + login + "?"))
+		{
+			document.mainusers.new_value.value = "0";
+			document.mainusers.submit();
+		}
+	}
+	else
+	{
+		if (confirm("Действительно хотите выдать привилегии администратора " + login + "?"))
+		{
+			document.mainusers.new_value.value = "1";
+			document.mainusers.submit();
+		}
+	}
+}
+
+function ignorelimit(login, flag)
+{
+	document.mainusers.login.value = login;
+	document.mainusers.action.value = "ignorelimit";
+	if (flag == "0")
+	{
+		if (confirm("Действительно хотите включить ограничение по лимиту для " + login + "?"))
+		{
+			document.mainusers.new_value.value = "0";
+			document.mainusers.submit();
+		}
+	}
+	else
+	{
+		if (confirm("Действительно хотите игнорировать ограничение по лимиту для " + login + "?"))
+		{
+			document.mainusers.new_value.value = "1";
+			document.mainusers.submit();
+		}
+	}
+}
+
+</script>
+<table width="100%" class="table">
+	<tr class="top_link"> <td colspan="2" align="center"> 
+			<a href="/doc.html">Документация</a> 
+			<a href="/cgi/sys_prefs.cgi">Настройки</a> 
+			<a href="/cgi/statis.cgi">Статистика</a> 
+			<a href="/cgi/auth.cgi?draw_menu_only=yes">Обновить данные</a> 
+			<a href="/cgi/auth.cgi?logout=yes">Выход</a> 
+	</td></tr>
+  <tr>
+	  <td colspan="2" align="center" class="info">
+		  <table width="100%">
+		  <form name="mainusers" method="post" action="/cgi/admin.cgi">
+			  <input type="hidden" name="login" value="">
+			  <input type="hidden" name="action" value="">
+			  <input type="hidden" name="new_value" value"">
+			  <tr class="head">
+				  <td> </td>
+				  <td> ID </td>
+				  <td> Права</td>
+				  <td> </td>
+				  <td> Описание </td>
+				  <td> Лимит </td>
+				  <td> Расход </td>
+				  <td> Доступ </td>
+				  <td> Ограничение </td>
+				  <td>  </td>
+				  <td>  </td>
+			  </tr>
+			  <TMPL_LOOP NAME=users>
+			  <tr>
+				  <td align=center> 
+					  <TMPL_IF NAME=is_workstation> 
+					  <img src="/img/computer.gif"> <!-- Рабочая станция -->
+					  <TMPL_ELSE>
+					  <img src="/img/men.gif"> <!-- Пользователь -->
+					  </TMPL_IF> 
+				  </td>
+
+				  <td> <TMPL_VAR NAME=login> </td>
+				  <td align="center"> 
+					  <TMPL_IF NAME=is_admin> 
+					  <a href="javascript:chadmin('<TMPL_VAR NAME=login>', 0)" title="Админ"><img src="/img/admin.gif" border="0"></a>
+					  <TMPL_ELSE>
+					  <a href="javascript:chadmin('<TMPL_VAR NAME=login>', 1)" title="Пользователь"><img src="/img/unpriv.gif" border="0"></a>
+					  </TMPL_IF> 
+				  </td>
+				  <td align="center"> 
+					  <a href="javascript:chpass('<TMPL_VAR NAME=login>');" title="Сменить пароль"><img src="/img/key.gif" border="0"></a> 
+				  </td>
+				  <td> 
+					  <a href="javascript:chdescr('<TMPL_VAR NAME=login>');"><TMPL_VAR NAME="descr"></a> 
+				  </td>
+				  <td> 
+					  <a href="javascript:chlimit('<TMPL_VAR NAME=login>');"><TMPL_VAR NAME="bytelimit"></a>
+				</td>
+				<td><TMPL_VAR NAME=bytecounter></td>
+				<td align="center">  
+					<TMPL_IF NAME=cache_access> 
+					<font color="green"> <img src="/img/ok.gif" alt="Разрешен"></font>
+					<TMPL_ELSE>
+					<font color="red"> <img src="/img/error.gif" alt="Запрещен"></font>
+					</TMPL_IF>
+				</td>
+				  <td> 
+					  <TMPL_IF NAME=ignorelimit> 
+					  <a href="javascript:ignorelimit('<TMPL_VAR NAME=login>', 0)">Отключено</a>
+					  <TMPL_ELSE>
+					  <a href="javascript:ignorelimit('<TMPL_VAR NAME=login>', 1)">Включено</a>
+					  </TMPL_IF>
+				  </td>
+				  <td> 
+					  <a href="javascript:rmuser('<TMPL_VAR NAME=login>');" title="Удалить"><img src="/img/remove2.gif"></a> 
+				  </td>
+				  <td> 
+					  <a href="/cgi/statis.cgi?login=<TMPL_VAR NAME=login>" title="Статистика"><img src="/img/graphs.gif"></a> 
+				  </td>
+			  </tr>
+			  </TMPL_LOOP>
+			  <tr class=head><td colspan=12>Общий расход трафика: <TMPL_VAR NAME=total_bytes> Мбайт</td></tr>
+			  <tr class=head><td colspan=12>Общий лимит трафика: <TMPL_VAR NAME=total_limit> Мбайт</td></tr>
+		  </form>
+		 </table>
+	  </td>
+  </tr>
+  </table>
+
+  <table class="add">
+  <tr class="head">
+	  <TMPL_IF NAME=def_user_access>
+	  <td> Добавить пользователя? </td> 
+	  </TMPL_IF>
+	  <TMPL_IF NAME=def_ip_access>
+	  <td> Добавить рабочую станцию? </td> 
+	  </TMPL_IF>
+  </tr>
+  <tr> 
+	  <TMPL_IF NAME=def_user_access>
+	<td> 
+  	<table class="form">
+		<form name="adduser" method="post" action="/cgi/admin.cgi">
+		<input type="hidden" name="action" value="adduser">
+		   <tr>
+			   <td align="right"> Логин: </td>
+			   <td> <input name="login" type="text"> </td>
+		   </tr>
+		   <tr>
+			   <td align="right"> ФИО: </td>
+			   <td> <input name="fullname" type="text" size="24"> </td> 
+	           </tr>
+		   <tr>
+			   <td align="right"> Пароль: </td> 
+			   <td><input name="newpass" type="text" size="12"> </td>
+		</tr>
+		   <tr>
+			   <td align="right"> Лимит: </td>
+			   <td> <input name="bytelimit" type="text" size="6"> </td>
+		</tr>
+		<tr>
+			   <td align="right"> Счетчик: </td>
+			   <td> <input name="bytecounter" type="text" size="6" value="0"> </td>
+		</tr>
+		   <tr>
+			   <td align="right"> <input name="ignorelimit" type="checkbox"> </td>
+			   <td align="left"> игнорировать лимит </td>
+		</tr>
+		   <tr>
+			   <td align="right"> <input name="is_admin" type="checkbox"> </td>
+			   <td align="left"> администратор </td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">  <input type="submit" value="Добавить"> </td>
+	 	   </tr>
+	</form>
+	</table>
+
+  	</td> 
+	  </TMPL_IF>
+	  <TMPL_IF NAME=def_ip_access>
+	<td> 
+
+  	<table class="form">
+		<form name="adduser" method="post" action="/cgi/admin.cgi">
+		<input type="hidden" name="action" value="addws">
+		   <tr>
+			   <td align="right"> IP: </td>
+			   <td> <input name="login" type="text"> </td>
+		   </tr>
+		   <tr>
+			   <td align="right"> Описание: </td>
+			   <td> <input name="fullname" type="text" size="24"> </td> 
+	           </tr>
+		   <tr>
+			   <td align="right"> Пароль: </td> 
+			   <td><input name="newpass" type="text" size="12"> </td>
+		</tr>
+		   <tr>
+			   <td align="right"> Лимит: </td>
+			   <td> <input name="bytelimit" type="text" size="6"> </td>
+		</tr>
+		<tr>
+			   <td align="right"> Счетчик: </td>
+			   <td> <input name="bytecounter" type="text" size="6" value="0"> </td>
+		</tr>
+		   <tr>
+			   <td align="right"> <input name="ignorelimit" type="checkbox"> </td>
+			   <td align="left"> игнорировать лимит </td>
+		</tr>
+		   <tr>
+			   <td align="right"> <input name="is_admin" type="checkbox"> </td>
+			   <td align="left"> администратор </td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">  <input type="submit" value="Добавить"> </td>
+	 	   </tr>
+	</form>
+	</table>
+
+  	</td> 
+	  </TMPL_IF>
+</tr>
+</TABLE>
+</BODY>
+</HTML>
+
